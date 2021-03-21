@@ -1,22 +1,20 @@
 import React, {useEffect, useState} from "react";
 import CategoriaForm from "./form/CategoriaForm";
 import CategoriaLista from "./lista/CategoriaLista";
-import CategoriaService from "./CategoriaService";
+import CategoriaService from "../../../../app/categorias/CategoriaService";
 import Mensagens from "../../shared/mensagens/Mensagens";
 
 
 const Categorias = () => {
-    const [categoria, setCategoria] = useState({});
+    const [categoria, setCategoria] = useState(null);
     const [categorias, setCategorias] = useState([]);
-
-    const categoriaService = new CategoriaService();
 
     const handlersForm = {
         salvar: async (categoria) => {
-            const response = await categoriaService.salvar(categoria)
-            if(response && response.status && (response.status === 200 || response.status === 201)){
+            const response = await new CategoriaService().salvar(categoria)
+            if (response && response.status && (response.status === 200 || response.status === 201)) {
                 Mensagens.sucesso("Yes! Categoria salva com sucesso!")
-            }else{
+            } else {
                 Mensagens.erro("Ops! Não conseguimos salvar a categoria!")
             }
             buscarCategorias();
@@ -25,19 +23,16 @@ const Categorias = () => {
     }
 
     const handlersLista = {
-        editar: (categoria) => {
-           setCategoria(categoria);
-        },
+        editar: (categoria) => setCategoria(categoria),
         remover: async (id) => {
-            const response = await categoriaService.remover(id);
+            const response = await new CategoriaService().remover(id);
 
-            if(response && response.status && response.status === 200){
+            if (response && response.status && response.status === 200) {
                 Mensagens.sucesso("Yes! Categoria removida com sucesso!")
                 handlersForm.limparFormulario();
-            }else{
+            } else {
                 Mensagens.erro("Ops! Não conseguimos remover a categoria!")
             }
-
             buscarCategorias();
         }
     }

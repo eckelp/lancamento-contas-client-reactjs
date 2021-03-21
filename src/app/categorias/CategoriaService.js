@@ -1,4 +1,4 @@
-import Http from "../../../app/http/Http";
+import Http from "../shared/http/Http";
 
 const API_CATEGORIAS = "/categorias";
 

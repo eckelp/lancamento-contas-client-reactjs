@@ -1,17 +1,16 @@
 import React, {useState, useEffect} from "react";
-import {Form, Input, Space} from 'antd';
+import {Col, Form, Input, Row, Space} from 'antd';
 import {BotaoPrimario, BotaoSucesso} from "../../../shared/botoes/Botoes";
 
+const formLayout = "vertical";
+
 const CategoriaForm = ({handlers, categoria}) => {
-    let inputDescricao;
-    const [descricao, setDescricao] = useState( '');
+    const [form] = Form.useForm();
+    const [descricao, setDescricao] = useState('');
 
     useEffect(() => {
         setDescricao(categoria ? categoria.descricao : '')
     }, [categoria, setDescricao]);
-
-    const formLayout = "horizontal";
-    const [form] = Form.useForm();
 
     const onChangeDescricao = (event) => {
         setDescricao(event.target.value);
@@ -35,14 +34,21 @@ const CategoriaForm = ({handlers, categoria}) => {
                 layout={formLayout}
                 form={form}
             >
-                    <Form.Item label="Descrição">
-                    <Input placeholder="Informe a descrição da categoria" onChange={onChangeDescricao} value={descricao}/>
-                </Form.Item>
+                <Row gutter={24}>
+                    <Col span={6}>
+                        <Form.Item label="Descrição">
+                            <Input placeholder="Categoria" onChange={onChangeDescricao}
+                                   value={descricao}/>
+                        </Form.Item>
+                    </Col>
+                </Row>
 
-                <Form.Item >
+                <Form.Item>
                     <Space>
-                        <BotaoSucesso handler={(event) => {onClickSalvar(event, categoria ? categoria.id : null)}} label="Salvar" />
-                        {categoria && ( <BotaoPrimario handler={onClickLimparFormulario} label="Novo" />)}
+                        <BotaoSucesso handler={(event) => {
+                            onClickSalvar(event, categoria ? categoria.id : null)
+                        }} label="Salvar"/>
+                        {categoria && (<BotaoPrimario handler={onClickLimparFormulario} label="Novo"/>)}
 
                     </Space>
                 </Form.Item>

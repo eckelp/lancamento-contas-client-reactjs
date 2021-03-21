@@ -1,11 +1,19 @@
 import axios from "axios";
+import StorageService from "../storage/StorageService";
 
 const API_URL = "http://localhost:8080"
 
 export default class Http {
 
+    storageService;
+
+    constructor() {
+        this.storageService = new StorageService();
+    }
+
     getHeaders(){
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJpZFwiOjEsXCJ1c2VybmFtZVwiOlwiZ2FicmllbFwiLFwicGVyZmlzXCI6W119IiwiaXNzIjoibGFuY2FtZW50by1jb250YXMtYXBpIiwiaWF0IjoxNjE1OTMwMzgyLCJleHAiOjE2NDE4NDY3ODJ9.i-hRGzxl1X7ESB2wEIOLTbQ2uLZKgOVw8iyjU-bkRd0';
+        const token = this.storageService.getToken();
+
         return {
             'Authorization': `Bearer ${token}`
         }
@@ -18,7 +26,7 @@ export default class Http {
     }
 
     post(url, body){
-        const headers = this.getHeaders();
+        const headers = url === '/auth' ? null : this.getHeaders();
 
         return axios.post(`${API_URL}${url}`, body,{headers});
     }

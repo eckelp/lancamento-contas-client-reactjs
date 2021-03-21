@@ -4,15 +4,12 @@ import {SearchOutlined} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import {BotaoAlerta, BotaoDanger} from "../../../shared/botoes/Botoes";
 
-
-const CategoriaLista = ({handlers, categorias}) => {
+const FormaPagamentoLista = ({handlers, formasPagamento}) => {
     let searchInput;
 
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [infoOrdenacao, setInfoOrdenacao] = useState({});
-
-
 
     const handleChange = (paginacao, filtro, ordenacao) => {
         setInfoOrdenacao(ordenacao);
@@ -79,8 +76,8 @@ const CategoriaLista = ({handlers, categorias}) => {
         setSearchText('');
     };
 
-    const handleEditar = (categoria) => {
-        handlers.editar(categoria);
+    const handleEditar = (formaPagamento) => {
+        handlers.editar(formaPagamento);
     }
 
     const handleRemover = (id) => {
@@ -97,8 +94,8 @@ const CategoriaLista = ({handlers, categorias}) => {
             sortOrder: infoOrdenacao.columnKey === 'descricao' && infoOrdenacao.order,
             ellipsis: true,
             ...getFiltroProps('descricao'),
-            render: (descricao, categoria, index) => (
-                <span key={categoria.id}>{descricao}</span>
+            render: (descricao, formaPagamento, index) => (
+                <span key={index}>{descricao}</span>
             )
         }, {
             title: 'Ações',
@@ -106,9 +103,9 @@ const CategoriaLista = ({handlers, categorias}) => {
             dataIndex: 'id',
             width: '20%',
             align: 'center',
-            render: (id, categoria) => (
+            render: (id, formaPagamento) => (
                 <Space size="middle" key={id}>
-                    <BotaoAlerta handler={() => handleEditar(categoria)} label="Editar" />
+                    <BotaoAlerta handler={() => handleEditar(formaPagamento)} label="Editar" />
                     <BotaoDanger handler={() => handleRemover(id)} label="Remover"/>
                 </Space>
             ),
@@ -117,12 +114,12 @@ const CategoriaLista = ({handlers, categorias}) => {
 
     return (
         <>
-            <h2>Lista de Categorias</h2>
+            <h2>Lista de Formas de Pagamento</h2>
 
-            <Table columns={colunas} dataSource={categorias} onChange={handleChange} pagination={false}
+            <Table columns={colunas} dataSource={formasPagamento} onChange={handleChange} pagination={false}
                    bordered={true}/>
         </>
     );
 }
 
-export default CategoriaLista;
+export default FormaPagamentoLista;
